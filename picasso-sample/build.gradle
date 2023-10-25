@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+android {
+  namespace 'com.example.picasso'
+
+  compileSdkVersion libs.versions.compileSdk.get() as int
+
+  defaultConfig {
+    minSdkVersion libs.versions.minSdk.get() as int
+    applicationId 'com.example.picasso'
+  }
+
+  buildFeatures {
+    compose true
+  }
+
+  composeOptions {
+    kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+  }
+
+  compileOptions {
+    sourceCompatibility libs.versions.javaTarget.get()
+    targetCompatibility libs.versions.javaTarget.get()
+  }
+
+  kotlinOptions {
+    jvmTarget = libs.versions.javaTarget.get()
+  }
+
+  lintOptions {
+    lintConfig file('lint.xml')
+    textOutput 'stdout'
+    textReport true
+
+    // https://github.com/square/okhttp/issues/896
+    ignore 'InvalidPackage'
+  }
+}
+
+dependencies {
+  compileOnly libs.androidx.annotations
+  implementation libs.androidx.core
+  implementation libs.androidx.cursorAdapter
+  implementation libs.androidx.fragment
+  implementation libs.androidx.startup
+
+  implementation libs.drawablePainter
+  implementation libs.composeUi
+  implementation libs.composeRuntime
+  implementation libs.composeUi.foundation
+  implementation libs.composeUi.material
+  implementation libs.composeUi.uiTooling
+
+  implementation projects.picasso
+  implementation projects.picassoStats
+  implementation projects.picassoCompose
+  implementation projects.picassoLayoutlibCompat
+}

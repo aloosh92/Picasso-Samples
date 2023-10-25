@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.vanniktech.maven.publish'
+
+android {
+  namespace 'com.squareup.picasso3'
+
+  compileSdkVersion libs.versions.compileSdk.get() as int
+
+  defaultConfig {
+    minSdkVersion libs.versions.minSdk.get() as int
+    consumerProguardFiles 'consumer-proguard-rules.txt'
+
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+  }
+
+  compileOptions {
+    sourceCompatibility libs.versions.javaTarget.get()
+    targetCompatibility libs.versions.javaTarget.get()
+  }
+
+  kotlinOptions {
+    jvmTarget = libs.versions.javaTarget.get()
+  }
+
+  lintOptions {
+    textOutput 'stdout'
+    textReport true
+    lintConfig rootProject.file('lint.xml')
+  }
+
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+    }
+  }
+}
+
+dependencies {
+  api libs.okhttp
+  api libs.okio
+  api libs.androidx.lifecycle
+  implementation libs.androidx.annotations
+  implementation libs.androidx.core
+  implementation libs.androidx.exifInterface
+
+  testImplementation libs.coroutines.test
+  testImplementation libs.junit
+  testImplementation libs.truth
+  testImplementation libs.robolectric
+  testImplementation libs.mockito
+  testImplementation libs.okhttp.mockWebServer
+
+  androidTestImplementation libs.androidx.junit
+  androidTestImplementation libs.androidx.testRunner
+  androidTestImplementation libs.truth
+}
+
+spotless {
+  kotlin {
+    targetExclude(
+      // Non-Square licensed files
+      "src/test/java/com/squareup/picasso3/PlatformLruCacheTest.kt",
+    )
+  }
+}

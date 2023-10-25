@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.vanniktech.maven.publish'
+
+android {
+  namespace 'com.squareup.picasso3.compose'
+
+  compileSdkVersion libs.versions.compileSdk.get() as int
+
+  defaultConfig {
+    minSdkVersion libs.versions.minSdk.get() as int
+  }
+
+  buildFeatures {
+    compose true
+  }
+
+  composeOptions {
+    kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+  }
+
+  compileOptions {
+    sourceCompatibility libs.versions.javaTarget.get()
+    targetCompatibility libs.versions.javaTarget.get()
+  }
+
+  kotlinOptions {
+    jvmTarget = libs.versions.javaTarget.get()
+  }
+
+  lintOptions {
+    textOutput 'stdout'
+    textReport true
+    lintConfig rootProject.file('lint.xml')
+  }
+}
+
+dependencies {
+  api projects.picasso
+
+  implementation libs.drawablePainter
+  implementation libs.composeUi
+  implementation libs.composeUi.foundation
+
+  compileOnly libs.androidx.annotations
+}
